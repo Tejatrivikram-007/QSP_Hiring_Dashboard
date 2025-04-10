@@ -1,0 +1,103 @@
+
+
+<section id="statsSection" style="padding: 40px 20px;">
+    <div style="max-width: 1200px; margin: auto; display: flex; flex-wrap: wrap; justify-content: space-around; gap: 20px; text-align: center;">
+
+        <div style="flex: 1 1 250px; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 id="studentsPlaced" style="font-size: 2.5rem; color: #2d89e5;">0</h2>
+            <p style="font-size: 1.1rem;">Students Placed  </p>
+        </div>
+
+        <div style="flex: 1 1 250px; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 id="companyTieUps" style="font-size: 2.5rem; color: #2d89e5;">0</h2>
+            <p style="font-size: 1.1rem;">Companies Tie-Ups</p>
+        </div>
+
+        <div style="flex: 1 1 250px; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="font-size: 2.5rem; color: #2d89e5;">🏆</h2>
+            <p style="font-size: 1.1rem;">Multiple Awards & Certifications</p>
+        </div>
+
+    </div>
+</section>
+
+<section class="companies_container" style=" padding: 30px 0;">
+    <div class="container" style="max-width: 1000px; margin: auto; text-align: center;">
+        <h3 style="margin-bottom: 20px; font-size: 1.8rem; color: #333;">Top Companies Hiring Our Students</h3>
+        <div class="marquee">
+            <marquee behavior="" direction="" scrollamount="15">
+            <ul class="companies_list" style="display: flex;">
+                <li><img src="https://qspiders.com/Accenture.svg" alt=""></li>
+                <li><img src="https://qspiders.com/Amazon.svg" alt=""></li>
+                <li><img src="https://qspiders.com/EPAM%20Systems.svg" alt=""></li>
+                <li><img src="https://qspiders.com/Genpact.svg" alt=""></li>
+                <li><img src="https://qspiders.com/Kotak%20Mahindra%20Bank.svg" alt=""></li>
+                <li><img src="https://qspiders.com/IBM.svg" alt=""></li>
+                <li><img src="https://qspiders.com/Oracle.svg" alt=""></li>
+                <li><img src="https://qspiders.com/Cognizant.svg" alt=""></li>
+                <li><img src="https://qspiders.com/nference.svg" alt=""></li>
+                <li><img src="https://qspiders.com/Saint-Gobain.svg" alt=""></li>
+                <li><img src="https://qspiders.com/XpressBees.svg" alt=""></li>
+                <li><img src="https://qspiders.com/Acuvate.svg" alt=""></li>
+                <li><img src="https://qspiders.com/Concentrix.svg" alt=""></li>
+                <li><img src="https://qspiders.com/Epsilon.svg" alt=""></li>
+                <li><img src="https://qspiders.com/HCL.svg" alt=""></li>
+                <li><img src="https://qspiders.com/LG%20Soft%20India.svg" alt=""></li>
+                <li><img src="https://qspiders.com/NTT%20Data.svg" alt=""></li>
+                <li><img src="https://qspiders.com/Sigmoid.svg" alt=""></li>
+                <li><img src="https://qspiders.com/Yokogawa.svg" alt=""></li>
+                <li><img src="https://qspiders.com/HDFC%20Bank.svg" alt=""></li>
+                <li><img src="https://qspiders.com/L&T.svg" alt=""></li>
+                <li><img src="https://qspiders.com/Sony.svg" alt=""></li>
+                <li><img src="https://qspiders.com/Adobe.svg" alt=""></li>
+                <li><img src="https://qspiders.com/Credera.svg" alt=""></li>
+            </ul>
+        </marquee>
+        </div>
+    </div>
+    
+</section>
+
+
+
+
+
+<script>
+
+    function animateValue(id, start, end, duration) {
+        let obj = document.getElementById(id);
+        let startTime = null;
+
+        function step(timestamp) {
+            if (!startTime) startTime = timestamp;
+            let progress = timestamp - startTime;
+            let current = Math.floor(start + (end - start) * (progress / duration));
+            obj.textContent = current.toLocaleString();
+            if (progress < duration) {
+                window.requestAnimationFrame(step);
+            } else {
+                obj.textContent = end.toLocaleString();
+            }
+        }
+
+        window.requestAnimationFrame(step);
+    }
+
+    let hasAnimated = false;
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !hasAnimated) {
+                hasAnimated = true;
+                animateValue("studentsPlaced", 0, 410000, 2000);  
+                animateValue("companyTieUps", 0, 2500, 2000);     
+            }
+        });
+    }, {
+        threshold: 0.3 
+    });
+
+    const section = document.getElementById('statsSection');
+    observer.observe(section);
+</script>
+
+ 

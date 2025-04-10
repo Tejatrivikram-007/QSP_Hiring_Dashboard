@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <!-- <a class="navbar-brand" href="{% url 'index' %}">
+      <img src="https://sbs.ac.in/wp-content/uploads/2022/05/q-spiders.png" alt="" style="width: 100px; height: 50px;">
+    </a> -->
+    <a class="navbar-brand" href="{% url 'index' %}">
+      <img src="https://placements.qspiders.com/sites/default/files/QJsp_0.png" alt="" style="width: 100px; height: 40px;">
+    </a>
+    <a class="navbar-brand" href="{% url 'index' %}">
+      <img src="https://pyspiders.com/_nuxt/img/logo_pyspiders.4f56184.png" alt="" style="width: 100px; height: 40px;">
+    </a>
+    
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'index' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'add_requirement' %}">Add Requirements</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

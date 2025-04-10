@@ -1,0 +1,123 @@
+<div class="requirement_container">
+    <h2>Hiring Dashboard</h2>
+
+    <div class="filter-buttons">
+        <button class="filter-btn" data-filter="today">Today</button>
+        <button class="filter-btn" data-filter="yesterday">Yesterday</button>
+        <button class="filter-btn" data-filter="last_week">Last Week</button>
+        <button class="filter-btn" data-filter="last_month">Current Month</button>
+    </div>
+
+
+
+    <table id="requirement-table">
+        <thead>
+            <tr>
+                <th>Company Code</th>
+                <th>Company Name</th>
+                <th>Degree</th>
+                <th>Stream</th>
+                <th>Min %</th>
+                <th>YOP</th>
+                <th>Salary</th>
+                <th>Agreement (Yr)</th>
+                <th>Location</th>
+                <th>Openings</th>   
+                <th>Date</th>
+                {% if user.is_authenticated %}
+                <th>Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody id="requirement-body">
+            {% for r in requirements %}
+            <tr>
+                <td>{{ r.company_id|upper }}</td>
+                <td>{{ r.company_name|upper }}</td>
+                <td>{{ r.bachelor_degree|upper }}</td>
+                <td>{{ r.stream|upper }}</td>
+                <td>{{ r.percentage }}</td>
+                <td>{{ r.year_of_passout }}</td>
+                <td>₹ {{ r.salary }} Per Annum</td>
+                <td>{{ r.agreement }}</td>
+                <td>{{ r.location|title }}</td>
+                <td>{{ r.no_of_vacancies }}</td>
+                <td>{{ r.created_at.date }}</td>
+                {% if user.is_authenticated %}
+                <td data-label="Actions">
+                    <a href="{% url 'update_requirement' r.id %}">Edit</a> |
+                    <a href="{% url 'delete_requirement' r.id %}">Delete</a>
+                </td>
+                {% endif %}
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    
+    
+    <script>
+        
+        const updateUrlBase = "{% url 'update_requirement' 0 %}".replace(/0\/?$/, '');
+        const deleteUrlBase = "{% url 'delete_requirement' 0 %}".replace(/0\/?$/, '');
+    
+        document.addEventListener('DOMContentLoaded', () => {
+            const todayBtn = document.querySelector('.filter-btn[data-filter="today"]');
+            if (todayBtn) {
+                todayBtn.classList.add('active'); // visually highlight "Today"
+                todayBtn.click(); // auto-trigger "Today" on load
+            }
+        });
+    
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const filterValue = this.getAttribute('data-filter');
+    
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+    
+                fetch(`?date=${filterValue}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    const tbody = document.getElementById('requirement-body');
+                    tbody.innerHTML = '';
+    
+                    if (data.requirements.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="12">No requirements found.</td></tr>';
+                    } else {
+                        data.requirements.forEach(r => {
+                            let row = `<tr>
+                                <td>${r.company_id.toUpperCase()}</td>
+                                <td>${r.company_name.toUpperCase()}</td>
+                                <td>${r.bachelor_degree.toUpperCase()}</td>
+                                <td>${r.stream.toUpperCase()}</td>
+                                <td>${r.percentage}</td>
+                                <td>${r.year_of_passout}</td>
+                                <td>₹ ${r.salary} Per Annum</td>
+                                <td>${r.agreement ? r.agreement : 'NA'}</td>
+                                <td>${r.location.charAt(0).toUpperCase() + r.location.slice(1)}</td>
+                                <td>${r.no_of_vacancies}</td>
+                                <td>${r.created_at.split('T')[0]}</td>`;
+    
+                            {% if user.is_authenticated %}
+                            row += `<td>
+                                <a href="${updateUrlBase}${r.id}/">Edit</a> |
+                                <a href="${deleteUrlBase}${r.id}/">Delete</a>
+                            </td>`;
+                            {% endif %}
+    
+                            row += `</tr>`;
+                            tbody.innerHTML += row;
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    
+        

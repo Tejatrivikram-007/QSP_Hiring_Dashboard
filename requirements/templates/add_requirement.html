@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="requirement-form-wrapper">
+    <h2 class="form-title">Add Requirement</h2>
+
+    {% if messages %}
+        <div class="form-messages">
+            {% for message in messages %}
+                <div class="message-box">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post" class="requirement-form">
+        {% csrf_token %}
+        <div class="form-fields">
+            {{ form.as_p }}
+        </div>
+        <div class="form-actions">
+            <button type="submit" name="submit" class="btn-submit">Submit</button>
+            <button type="submit" name="reset" class="btn-reset">Reset</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

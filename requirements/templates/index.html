@@ -1,0 +1,939 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url('https://i.pinimg.com/736x/b3/56/e7/b356e7821c98a25a08d0701186f98a3a.jpg');
+            background-size: cover;              
+            background-position: center;         
+            background-repeat: no-repeat;
+            background-attachment: fixed;        
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .requirements-section {
+            margin-bottom: 50px; 
+        }
+        .companies_list li {
+            display: inline-block;
+            margin: 0 40px;
+            font-size: 1.2rem;
+            color: #e52d4c;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .filters input, .filters select {
+            margin: 5px;
+            padding: 5px;
+        }
+        .add-btn {
+            float: right;
+            margin-top: -35px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #2d89e5;
+            color: white;
+        }
+        .requirement_container {
+            padding: 20px;
+            height: auto;
+            width: 100%;
+            margin: 50px auto;
+            background: #f9f9f9;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow-x: auto; 
+        }
+
+        .requirement_container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 10px 18px;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .filter-btn.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0, 123, 255, 0.4);
+        }
+
+
+        table {
+            width: 100%;
+            min-width: 1000px; 
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead {
+            background-color: #007bff;
+            color: white;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .login-container h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            background-color: #f8d7da;
+            color: #842029;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #f5c2c7;
+        }
+
+
+        /* -------------------------------------------<< add requirement >>---------------------------- */
+
+        .requirement-form-wrapper {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+
+        .form-title {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .form-messages {
+            margin-bottom: 20px;
+        }
+
+        .message-box {
+            background-color: #dff0d8;
+            color: #3c763d;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .requirement-form .form-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .requirement-form .form-fields p {
+            margin: 0;
+        }
+
+        .requirement-form label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .requirement-form input[type="text"],
+        .requirement-form input[type="number"],
+        .requirement-form input[type="email"],
+        .requirement-form select,
+        .requirement-form textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border 0.3s;
+        }
+
+        .requirement-form input:focus,
+        .requirement-form select:focus,
+        .requirement-form textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .form-actions {
+            grid-column: span 2;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        .btn-submit,
+        .btn-reset {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .btn-submit {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-reset {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-reset:hover {
+            background-color: #5a6268;
+        }
+
+/* -----------------------------------------<< update requirement >>---------------------------- */
+        .update_requirement {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .update_requirement h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .update_requirement form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .update_requirement form p {
+            flex: 0 0 48%;
+            margin: 0;
+        }
+
+        .update_requirement form p label {
+            font-weight: 500;
+            display: block;
+            margin-bottom: 5px;
+            color: #444;
+        }
+
+        .update_requirement form p input,
+        .update_requirement form p select,
+        .update_requirement form p textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .btn_save {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn_save:hover {
+            background-color: #0056b3;
+        }
+
+/* --------------------------------<< login >>-------------------------------- */
+        .row.justify-content-center {
+            margin-top: 80px;
+        }
+
+        h2.text-muted {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #333 !important;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+            color: #444;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .text-danger {
+            font-size: 14px;
+        }
+
+        .loginpage_a {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn_login {
+            background-color: #343a40;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn_login:hover {
+            background-color: #23272b;
+        }
+
+        .btn_login_page {
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 15px;
+            border: 1px solid #007bff;
+            color: #007bff;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .btn_login_page:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* ---------------- Responsive Styles ---------------- */
+
+        @media (max-width: 1024px) {
+            .requirement-form .form-fields {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+
+            .update_requirement form {
+                flex-direction: column;
+            }
+
+            .update_requirement form p {
+                flex: 1 1 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container,
+            .requirement-form-wrapper,
+            .update_requirement,
+            .login-container {
+                padding: 15px;
+                margin: 20px;
+            }
+
+            .companies_list li {
+                display: block;
+                margin: 10px 0;
+                text-align: center;
+            }
+
+            .filter-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            table {
+                font-size: 12px;
+                min-width: unset;
+            }
+
+            .btn_submit,
+            .btn_reset {
+                width: 100%;
+            }
+
+            .btn_save {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .loginpage_a {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h2.text-muted,
+            .form-title {
+                font-size: 22px;
+            }
+
+            .btn_login,
+            .btn_login_page {
+                width: 100%;
+                text-align: center;
+            }
+
+            .form-control {
+                font-size: 14px;
+            }
+
+            .filter-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .alert {
+                font-size: 13px;
+            }
+        }
+
+
+    </style>
+
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>Qspider's Hiring Platform</title>
+    {% endif %}
+
+  </head>
+  <body>
+
+    {% include 'nav.html' %}
+
+    {% block content %}
+    
+
+        {% include 'home.html' %}
+        {% if messages %}
+        <div class="form-messages">
+            {% for message in messages %}
+            <div class="message-box alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <script>
+            setTimeout(function() {
+                const messages = document.querySelectorAll('.message-box');
+                messages.forEach(msg => msg.remove());
+            }, 3000);
+        </script>
+
+        <div class="requirements-section">
+            {% include 'requirements.html' %}
+        </div>
+        <div id="random-contact-box" style="width: 100%;display: flex;justify-content: center;"></div>
+
+    {% endblock content %}
+    {% include 'footer.html' %}
+
+<script>
+  const contactBoxes = [
+  {
+    id: 1,
+    html: `<div class="contact-box" style="text-align: center; padding: 20px; background: #fefefe; border: 1px dashed #ccc; border-radius: 12px; margin: 20px 0;">
+      <p><strong>Interested in a listed requirement?</strong></p>
+      <p>Walk into the <strong>HR Cabin</strong> or contact us at <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+      <p>We're here to help you take the next step!</p>
+    </div>`
+  },
+  {
+    id: 2,
+    html: `<div class="contact-box" style="display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; margin: 20px 0; padding: 20px; background-color: #e9f7ef; border: 1px solid #b2dfdb; border-radius: 12px;">
+      <p><strong>Excited about an opportunity?</strong> Don’t wait!</p>
+      <p>Step into the <strong>HR Cabin</strong> to express your interest</p>
+      <p>or connect with us directly at <strong>+91-7338667446</strong> / <strong>+91-914816399</strong>.</p>
+    </div>`
+  },
+  {
+    id: 3,
+    html: `<div class="contact-box" style="display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; margin: 20px 0; padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 10px;">
+      <p><strong><u>Attention Candidates:</u></strong> If any of the listed roles align with your profile,</p>
+      <p>please connect with us in person at the <strong>HR Cabin</strong></p>
+      <p>or reach out via phone: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong>.</p>
+    </div>`
+  },
+  {
+    id: 4,
+    html: `<div class="contact-box" style="padding: 25px; background-color: #d1ecf1; border: 2px dotted #0c5460; border-radius: 15px; text-align: center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px 0;">
+      <p><strong>👀 Spotted your dream job?</strong></p>
+      <p>Don't just stare at the screen like it's a pizza menu 🍕</p>
+      <p>Sprint (or casually stroll) to the <strong>HR Cabin</strong> 🏃‍♀️</p>
+      <p>Or call us — yes, we still answer phones: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong> 📞</p>
+      <p>Warning: Ignoring cool opportunities may cause extreme FOMO. 😅</p>
+    </div>`
+  },
+  {
+    id: 5,
+    html: `<div class="contact-box" style="padding: 30px; background-color: #f0f9ff; border-left: 6px solid #007bff; border-radius: 10px; font-family: 'Trebuchet MS', sans-serif; margin: 20px 0; text-align: center;">
+      <p><strong>🌟 The Prophecy Has Spoken...</strong></p>
+      <p>A golden opportunity lies above – but only the brave shall claim it! ⚔️</p>
+      <p>To begin your quest, venture forth to the sacred lands of <strong>HR Cabin</strong> 🏰</p>
+      <p>Or summon the guardians via magic digits: <strong>+91-7338667446</strong> or <strong>+91-914816399</strong> 🧙‍♂️📞</p>
+      <p>Destiny doesn’t dial twice. Choose wisely, hero. 🧭</p>
+    </div>`
+  },
+  {
+    id: 6,
+    html: `<div class="contact-box" style="padding: 25px; background-color: #e6f7ff; border-left: 6px solid #17a2b8; border-radius: 10px; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 20px 0;">
+      <p><strong>📣 Hey Future Legends!</strong></p>
+      <p>Spotted some openings that caught your eye? 👀</p>
+      <p>Don’t just sit there refreshing your Insta feed—slide into opportunity! 🚀</p>
+      <p>Walk up to the <strong>HR Cabin</strong> or call the magic digits:</p>
+      <p><strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+      <p>Your dream job won’t DM you first 😎</p>
+    </div>`
+  },
+  {
+    id: 7,
+    html: `<div class="contact-box" style="padding: 25px; background-color: #fff0f5; border-left: 6px solid #ff69b4; border-radius: 10px; font-family: 'Verdana', sans-serif; text-align: center; margin: 20px 0;">
+      <p><strong>🍔 Missed the canteen special? Don’t miss this one!</strong></p>
+      <p>These job openings are hotter than samosas at 4 PM 😋</p>
+      <p>Want in? Head to the <strong>HR Cabin</strong> before the bell rings! 🛎️</p>
+      <p>Or just call us like it’s viva panic time: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+      <p>Real talks, future calls. 🎓📞</p>
+    </div>`
+  },
+  {
+    id: 8,
+    html: `<div class="contact-box" style="padding: 25px; background-color: #eaffea; border-left: 6px solid #28a745; border-radius: 10px; font-family: 'Tahoma', sans-serif; text-align: center; margin: 20px 0;">
+      <p><strong>📢 Pro tip: Unlike exams, this opportunity is open book!</strong></p>
+      <p>If you're interested in any requirement, don't just Google your fate 🤓</p>
+      <p>March straight to the <strong>HR Cabin</strong> or call the helpline of dreams:</p>
+      <p><strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+      <p>PS: No need to bring a hall ticket 📝</p>
+    </div>`
+  },
+  {
+    id: 9,
+    html: `<div class="contact-box" style="padding: 25px; background-color: #f0f8ff; border-left: 6px solid #007bff; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+      <p><strong>🎉 Got Talent? We Got Openings!</strong></p>
+      <p>Whether you’re a coder, designer, or just really good at PPTs — your stage is here 🎤</p>
+      <p>Contact the <strong>HR Cabin</strong> for a front-row seat to your career.</p>
+      <p>Or dial up your next chapter: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+      <p>It’s your time to shine ✨</p>
+    </div>`
+  },
+  {
+      id: 10,
+      html: `<div class="contact-box" style="text-align: center; padding: 20px; background: #fefefe; border: 1px dashed #ccc; border-radius: 12px; margin: 20px 0;">
+        <p><strong>Interested in a listed requirement?</strong></p>
+        <p>Walk into the <strong>HR Cabin</strong> or contact us at <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+        <p>We're here to help you take the next step!</p>
+      </div>`
+    },
+    {
+      id: 11,
+      html: `<div class="contact-box" style="display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; margin: 20px 0; padding: 20px; background-color: #e9f7ef; border: 1px solid #b2dfdb; border-radius: 12px;">
+        <p><strong>Excited about an opportunity?</strong> Don’t wait!</p>
+        <p>Step into the <strong>HR Cabin</strong> to express your interest</p>
+        <p>or connect with us directly at <strong>+91-7338667446</strong> / <strong>+91-914816399</strong>.</p>
+      </div>`
+    },
+    {
+        id: 12,
+        html: `<div class="contact-box" style="padding: 25px; background-color: #f0f8ff; border-left: 6px solid #007bff; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>🎉 Got Talent? We Got Openings!</strong></p>
+    <p>Whether you’re a coder, designer, or just really good at PPTs — your stage is here 🎤</p>
+    <p>Contact the <strong>HR Cabin</strong> for a front-row seat to your career.</p>
+    <p>Or dial up your next chapter: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>It’s your time to shine ✨</p>
+</div>`
+    },
+    {
+  id: 13,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #e6f7ff; border-left: 6px solid #0056b3; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>📢 Job Alert: Dreams Hiring Now!</strong></p>
+    <p>Put that LinkedIn bio to real use. The HR cabin is waiting, and so is your future.</p>
+    <p>Call before your dream job gets taken: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Applications open. Drama not required 🎭</p>
+  </div>`
+},
+{
+  id: 14,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #fef9e7; border-left: 6px solid #f39c12; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>💼 Resume Ready? Let’s Talk.</strong></p>
+    <p>If your CV could win awards, it belongs in our inbox.</p>
+    <p>Reach out to HR faster than you reach for coffee on Monday: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Hiring vibes only ✨</p>
+  </div>`
+},
+{
+  id: 15,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #e8f5e9; border-left: 6px solid #43a047; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>🚀 Apply Now, Regret Never.</strong></p>
+    <p>We’re hiring folks who can actually spell “responsibility” on the first try.</p>
+    <p>Prove it: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>No cringe cover letters needed 🙅‍♂️</p>
+  </div>`
+},
+{
+  id: 16,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #fff0f5; border-left: 6px solid #d63384; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>📎 Attach Resume. Impress Instantly.</strong></p>
+    <p>Are you jobless or just job-curious? Either way, call us.</p>
+    <p>HR hotline for hopefuls: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>We judge experience, not typos. Maybe.</p>
+  </div>`
+},
+{
+  id: 17,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #f3f4f6; border-left: 6px solid #374151; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>📄 Your Resume Deserves a Promotion.</strong></p>
+    <p>Slide it into our inbox like a DM at midnight.</p>
+    <p>Operators are standing by (probably): <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>💬 Let’s talk jobs — and free coffee</p>
+  </div>`
+},
+{
+  id: 18,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #e0f7fa; border-left: 6px solid #00acc1; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>🕵️‍♂️ We’re Hiring. Don’t Ghost This Ad.</strong></p>
+    <p>We're not saying we’re the best company — but yeah, we kinda are.</p>
+    <p>Prove us right: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Your cubicle is waiting 🖥️</p>
+  </div>`
+},
+{
+  id: 19,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #f1f8e9; border-left: 6px solid #7cb342; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>🔥 Your Job Hunt Ends Here.</strong></p>
+    <p>If you can survive group projects, you’re ready for us.</p>
+    <p>Dial your destiny: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>HR won’t bite. Probably.</p>
+  </div>`
+},
+{
+  id: 20,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #fff3e0; border-left: 6px solid #fb8c00; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>💡 Got Skills? We’ve Got Bills (to Pay You).</strong></p>
+    <p>Apply now and brag later. That’s how careers are born.</p>
+    <p>Call HR faster than you binge-watch Netflix: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>We promise—no unpaid internships.</p>
+  </div>`
+},
+{
+  id: 21,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #ede7f6; border-left: 6px solid #673ab7; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>🎯 You Found the Hiring Zone.</strong></p>
+    <p>Stop refreshing job boards. Start dialing us.</p>
+    <p><strong>+91-7338667446</strong> / <strong>+91-914816399</strong> — one small call for you, one giant leap for your career 🚀</p>
+    <p>We believe in second chances. Even for your resume.</p>
+  </div>`
+},
+{
+  id: 22,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #fbe9e7; border-left: 6px solid #e53935; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>📬 Slide Into Our HR’s Inbox</strong></p>
+    <p>No weird intros needed. Just your name and skills (bonus if you bring donuts).</p>
+    <p>Call us like it’s your ex you want back: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Only red flag here is the HR tablecloth ❤️</p>
+  </div>`
+},
+{
+  id: 23,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #e8eaf6; border-left: 6px solid #3f51b5; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>🖊️ Interviews. But Make It Fun.</strong></p>
+    <p>If you're confident, caffeinated, and not allergic to deadlines, we need to talk.</p>
+    <p>📱 HR Hotline: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>We don’t bite. Just hire.</p>
+  </div>`
+},
+{
+  id: 24,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #f9fbe7; border-left: 6px solid #c0ca33; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>🤝 Careers, Not Just Jobs.</strong></p>
+    <p>Join us if you want growth, mentorship, and better Wi-Fi.</p>
+    <p>Connect before coffee break ends: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Your chair is calling 🪑</p>
+  </div>`
+},
+{
+  id: 25,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #eceff1; border-left: 6px solid #607d8b; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>🧾 Freshers Welcome. Legends Preferred.</strong></p>
+    <p>If your last project had more bugs than a picnic, don’t worry—we mentor.</p>
+    <p>HR will listen (and laugh): <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>No awkward handshakes required 🤝</p>
+  </div>`
+},
+{
+  id: 26,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #e1f5fe; border-left: 6px solid #0288d1; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>📣 Now Hiring: Smart. Witty. Available.</strong></p>
+    <p>If that’s you, you’ve found your people.</p>
+    <p>HR line open like your tabs on Monday: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Apply today. Regret nothing.</p>
+  </div>`
+},
+{
+  id: 27,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #edeaea; border-left: 6px solid #8e44ad; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>🎉 Your Career Party Starts Here</strong></p>
+    <p>BYOR: Bring Your Own Resume</p>
+    <p>Call to RSVP: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>No DJ, just HR with good vibes 🎶</p>
+  </div>`
+},
+{
+  id: 28,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #f0fff4; border-left: 6px solid #38a169; border-radius: 10px; font-family: 'Comic Sans MS', cursive; text-align: center; margin: 20px 0;">
+    <p><strong>🎓 Final Year? Final Call!</strong></p>
+    <p>Pass-outs, pass-ons, pass-outs again — time to pass into employment 😴➡️💼</p>
+    <p>Talk to HR before your Wi-Fi bill expires: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Campus placements never felt this funny 😅</p>
+  </div>`
+},
+{
+  id: 29,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #fdf6e3; border-left: 6px solid #b58900; border-radius: 10px; font-family: 'Comic Sans MS', cursive; text-align: center; margin: 20px 0;">
+    <p><strong>📚 Tired of Assignments? Try Employment.</strong></p>
+    <p>If you can submit on Moodle at 11:59, you’re built for deadlines 🕒</p>
+    <p>Proof? HR is waiting: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>No viva, just vibe checks 🔥</p>
+  </div>`
+},
+{
+  id: 30,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #e0f7fa; border-left: 6px solid #00bcd4; border-radius: 10px; font-family: 'Comic Sans MS', cursive; text-align: center; margin: 20px 0;">
+    <p><strong>🧑‍💻 Intern Today, CEO Tomorrow?</strong></p>
+    <p>Okay, maybe not *tomorrow* but you get the idea.</p>
+    <p>Start somewhere. Start here 👉 <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Your hostel Wi-Fi can’t block this opportunity 😎</p>
+  </div>`
+},
+{
+  id: 31,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #fff3f3; border-left: 6px solid #ff4d4d; border-radius: 10px; font-family: 'Comic Sans MS', cursive; text-align: center; margin: 20px 0;">
+    <p><strong>📢 CGPA ≠ Everything.</strong></p>
+    <p>If you're funny in group chats and punctual on lab day — you qualify!</p>
+    <p>DM HR (aka your future boss): <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Interviews may or may not include memes 😂</p>
+  </div>`
+},
+{
+  id: 32,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #e8f5e9; border-left: 6px solid #43a047; border-radius: 10px; font-family: 'Comic Sans MS', cursive; text-align: center; margin: 20px 0;">
+    <p><strong>🚨 Campus Wi-Fi Can’t Get You Jobs</strong></p>
+    <p>But this number can: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Call now, thank us later during placements 😏</p>
+    <p>Free tips included. Like… actually.</p>
+  </div>`
+},
+{
+  id: 33,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #f0f8ff; border-left: 6px solid #007bff; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>📞 Ready to Begin Your Career Journey?</strong></p>
+    <p>Let’s take the first step together. Reach out to our HR department anytime.</p>
+    <p>Contact: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>We’re here to support your next move.</p>
+  </div>`
+},
+{
+  id: 34,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #f9f9f9; border-left: 6px solid #6c757d; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>🎓 Graduation Approaching?</strong></p>
+    <p>Let us help you transition smoothly from campus to career.</p>
+    <p>Speak with our HR team: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Your future starts now.</p>
+  </div>`
+},
+{
+  id: 35,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #f3f7ff; border-left: 6px solid #5a9bd5; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>🌟 Looking for Internship or Placement?</strong></p>
+    <p>We’d be happy to assist. Reach out and let’s explore opportunities together.</p>
+    <p>Call: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Your growth is our priority.</p>
+  </div>`
+},
+{
+  id: 36,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #fff5e6; border-left: 6px solid #ff9800; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>🤝 We Value Your Potential</strong></p>
+    <p>If you’re seeking career guidance or opportunities, we’re just a call away.</p>
+    <p>HR Contact: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Let’s build your future together.</p>
+  </div>`
+},
+{
+  id: 37,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #f0fff0; border-left: 6px solid #28a745; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>💼 Starting Your Career Soon?</strong></p>
+    <p>We would love to help you find the right opportunity.</p>
+    <p>Reach our HR department: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Let’s take this step together.</p>
+  </div>`
+},
+{
+  id: 38,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #fefeff; border-left: 6px solid #9c27b0; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>🔍 Exploring Career Opportunities?</strong></p>
+    <p>Our team is here to guide you and answer your questions.</p>
+    <p>Contact us at: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>We’re just a call away.</p>
+  </div>`
+},
+{
+  id: 39,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #f0f5ff; border-left: 6px solid #3f51b5; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>📚 Still Studying, But Planning Ahead?</strong></p>
+    <p>It’s never too early to prepare. Let’s talk about your options.</p>
+    <p>HR is available at: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Your goals matter to us.</p>
+  </div>`
+},
+{
+  id: 40,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #eaf6f6; border-left: 6px solid #009688; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>👩‍🎓 Empowering Student Careers</strong></p>
+    <p>Looking for internships, full-time roles, or just advice? Let us assist.</p>
+    <p>Get in touch: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Your journey begins here.</p>
+  </div>`
+},
+{
+  id: 41,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #fffbe6; border-left: 6px solid #ffc107; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>📈 Taking the First Step is Key</strong></p>
+    <p>We’re here to provide support, guidance, and opportunity.</p>
+    <p>Contact HR today: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Your potential is limitless.</p>
+  </div>`
+},
+{
+  id: 42,
+  html: `<div class="contact-box" style="padding: 25px; background-color: #f7faff; border-left: 6px solid #2196f3; border-radius: 10px; font-family: 'Georgia', serif; text-align: center; margin: 20px 0;">
+    <p><strong>👨‍💼 Let’s Discuss Your Career Goals</strong></p>
+    <p>Our HR team is happy to answer your queries and guide you forward.</p>
+    <p>Reach us anytime: <strong>+91-7338667446</strong> / <strong>+91-914816399</strong></p>
+    <p>Looking forward to connecting with you.</p>
+  </div>`
+}
+
+
+    // Add the rest of your contactBoxes here...
+  ];
+
+  const randomBox = contactBoxes[Math.floor(Math.random() * contactBoxes.length)];
+  document.getElementById('random-contact-box').innerHTML = randomBox.html;
+</script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  </body>
+</html>

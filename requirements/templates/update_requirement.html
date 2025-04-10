@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="update_requirement">
+    <h2>Update Requirement</h2>
+    
+    {% if messages %}
+    <div class="form-messages">
+        {% for message in messages %}
+        <div class="message-box alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn_save btn-primary">Update Requirement</button>
+    </form>
+</div>
+
+<script>
+    setTimeout(function() {
+        const messages = document.querySelectorAll('.message-box');
+        messages.forEach(msg => msg.remove());
+    }, 3000);
+
+    {% if updated %}
+    setTimeout(function() {
+        window.location.href = "{% url 'index' %}";
+    }, 2000);
+    {% endif %}
+</script>
+{% endblock content %}
