@@ -5,14 +5,16 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, password_validation, update_session_auth_hash
-from .models import Requirements
-from .forms import RequirementForm
+from .models import Requirements,Schedule
+from .forms import RequirementForm,ScheduleForm
 from django.http import JsonResponse
 
 ALLOWED_USERS = ['admin_hr', 'hr_mysore']  #if we need then we can add userrnames
 
 
 def index(request):
+    
+    Requirements.objects.filter(created_at__lt=now().date() - timedelta(days=31)).delete() # Clean up old requirements
     today = now().date()
     yesterday = today - timedelta(days=1)
     last_week = today - timedelta(days=7)
@@ -21,7 +23,7 @@ def index(request):
     date_filter = request.GET.get('date')
     requirements = Requirements.objects.all()
 
-    if date_filter == "today":
+    if date_filter == "today": 
         requirements = requirements.filter(created_at__date=today)
     elif date_filter == "yesterday":
         requirements = requirements.filter(created_at__date=yesterday)
@@ -37,11 +39,13 @@ def index(request):
         ))
         return JsonResponse({'requirements': data})
 
+    scheduleinfo = Schedule.objects.all()
     return render(request, 'index.html', {
-    'requirements': requirements,
-    'active_filter': date_filter,
-    'title': 'Hiring Dashboard',
-})
+        'requirements': requirements,
+        'schedule': scheduleinfo,
+        'active_filter': date_filter,
+        'title': 'Hiring Dashboard',
+    })
 
 
 def register_view(request):
@@ -169,7 +173,70 @@ def delete_requirement(request, id):
         return HttpResponse("Unauthorized", status=401)
     
 
+def add_schedule(request):
+   form = None
+   if request.user.is_authenticated:
+      if request.method == 'POST':
+         if 'reset' in request.POST:
+               return redirect('schedule')  
+         form = ScheduleForm(request.POST)
+         if form.is_valid():
+               form.save()
+               messages.success(request, "Scheduled Student list added successfully!")
+               form = form
+               return redirect('/#schmain')
+      else:
+         form = ScheduleForm() 
+   else:
+      return redirect('login') 
 
+   return render(request, 'add_schedule.html', {'form': form,'title':'Add Scheduled Students'})
+
+def schedule(request):
+    scheduleinfo=Schedule.objects.all() 
+    sname=None
+    addr=None
+    print(type(scheduleinfo[0].students_name))
+    context={
+            'schedule':scheduleinfo,
+            'addr':addr,
+            'updated':None,
+            'sname':sname 
+    }
+    return render(request,'schedules.html',context)
+    
+
+# def update_schedule(request,id):
+#     schedule = get_object_or_404(Schedule, id=id)
+#     if request.user.is_authenticated:
+#         if request.method == 'POST':
+#             form = ScheduleForm(request.POST, instance=schedule) 
+#             if form.is_valid():
+#                 form.save()
+#                 messages.success(request, "Schedule updated successfully!")
+#                 return redirect('/#schmain')
+#                 return render(request, 'add_schedule.html', {
+#                     'form': form,
+#                     'schedule': schedule,
+#                     'title': 'Update Schedule',
+#                     'updated': True
+#                 })
+#         else:
+#             form = ScheduleForm(instance=schedule)
+#         return render(request, 'add_schedule.html', {
+#             'form': form,
+#             'requirement': schedule,
+#             'title': 'Update Schedule'
+#         })
+        
+def delete_schedule(request,id):
+    data = Schedule.objects.get(id=id)
+    data.delete()
+    return redirect('/#schmain')
+
+def delete_all_schedule(request):
+    Schedule.objects.all().delete()
+    return redirect('/#schmain')
 
 
 

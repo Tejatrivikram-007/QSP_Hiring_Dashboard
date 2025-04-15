@@ -1,0 +1,335 @@
+<style>
+
+    /* ===================== Global & Container Styles ===================== */
+.schmain {
+    width: 95%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 25px 20px;
+    background-color: #ffffff;
+    border-radius: 30px;
+    box-shadow: 1px 1px 10px orange;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.schmain h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* ===================== Schedule Container & Card ===================== */
+.schedule_container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    padding: 10px;
+}
+
+.schedule_card {
+    background: #fefefe;
+    border: 1px solid #28a745;
+    border-radius: 15px;
+    padding: 18px 20px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.schedule_card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ===================== Company & Requirement Info ===================== */
+.comp_details {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    width: 100%;
+}
+
+.comp {
+    display: flex;
+    flex-direction: column;
+    color: #2d2d2d;
+    gap: 5px;
+}
+
+.comp_name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.comp_add,
+.comp_loc {
+    font-size: 13px;
+    color: #777;
+}
+
+.req {
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+    color: #333;
+    align-self: flex-end;
+}
+
+/* ===================== Student List ===================== */
+.stud {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    font-family: Georgia, serif;
+    width: 100%;
+    gap: 10px;
+}
+
+.stud label {
+    font-weight: bold;
+    color: #333;
+    flex: 0 0 150px;
+}
+
+.stlist {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.stlist span {
+    background: #e8e8e8;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* ===================== Action Buttons ===================== */
+.card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.card-actions a {
+    flex: 1;
+    min-width: 100px;
+    text-decoration: none;
+}
+
+.card-actions button {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.update-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.update-btn:hover {
+    background-color: white;
+    color: #007bff;
+    border: 2px solid #007bff;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: white;
+    color: #dc3545;
+    border: 2px solid #dc3545;
+}
+
+/* ===================== Add / Delete All Buttons ===================== */
+.delete_buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.schmain a {
+    width: 25%;
+    min-width: 120px;
+    text-decoration: none;
+}
+
+.schmain a button,
+.delete_all_btn {
+    padding: 10px;
+    width: 100%;
+    border: 1.5px solid #333;
+    border-radius: 8px;
+    background: transparent;
+    color: #333;
+    font-size: 15px;
+    font-family: 'Cursive', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.schmain a button:hover {
+    background-color: #f1f1f1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.delete_all_btn {
+    background-color: #e63946;
+    color: white;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(230, 57, 70, 0.5);
+    position: relative;
+    padding-left: 48px;
+}
+
+.delete_all_btn:hover {
+    background-color: #c82333;
+    box-shadow: 0 0 15px rgba(200, 35, 51, 0.7);
+}
+
+.delete_all_btn:active {
+    transform: scale(0.96);
+}
+
+.delete_all_btn::before {
+    content: "⚠️";
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+/* ===================== Loading State ===================== */
+.loading {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    font-size: 18px;
+    color: #666;
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 768px) {
+    .schmain h2 {
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .schedule_container {
+        grid-template-columns: 1fr;
+    }
+
+    .schmain a {
+        width: 90%;
+    }
+
+    .stud label,
+    .stlist {
+        flex: 1 1 100%;
+    }
+
+    .card-actions {
+        flex-direction: column;
+    }
+
+    .card-actions a {
+        width: 100%;
+    }
+
+    .delete_buttons {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+
+</style>
+
+{% block content %}
+<div class="schmain" id="schmain">
+<h2>Today's Scheduled Students Dashboard</h2>
+{% if not schedule %}
+    <div class="loading">No data available</div>
+{% else %}
+<section class="schedule_container" id="schedule_container">
+    {% for i in schedule %}
+        <div class="schedule_card">
+            <div class="comp_details">
+                <div class="comp">
+                    <label class="comp_name" style="font-size: 22px;">{{ i.company_name }}</label>
+                    {% if i.company_address is not None %}
+                        <label class="comp_add" style="font-size: 12px;">{{ i.company_address }}</label>
+                    {% elif i.company_address is None %} 
+                        <label class="comp_loc" style="font-size: 18px;">{{ i.company_location }}</label>
+                    {% endif %}
+                </div> 
+                <div class="req">
+                    <label class="requirement_id" style="font-size: 16.5px;">{{ i.requirement_id|upper }}</label>
+                </div>
+            </div>
+            <div class="stud">
+                <label class="stname">Scheduled Students: </label>
+                <div class="stlist">
+                    {% for student in i.studentslist %}
+                        <span>{{ student|title }}</span>
+                    {% endfor %}
+                </div>  
+            </div>
+            {% if user.is_authenticated %}
+<div class="card-actions">
+    {% comment %}
+    <a href="{% url 'update_schedule' i.id %}"><button class="update-btn">Update</button></a>
+    {% endcomment %}
+    <a href="{% url 'delete_schedule' i.id %}"><button class="delete-btn">Delete</button></a>
+</div>
+{% endif %}
+
+        </div>
+    {% endfor %} 
+</section>
+{% endif %}
+
+<div class="delete_buttons" style="display: flex;justify-content: space-between;align-items: center;">
+{% if user.is_authenticated %}
+<a href="{% url 'add_schedule' %}" style="margin: 20px;"><button>Add Schedule</button></a>
+<form class="form" action="{% url 'delete_all_schedule' %}" method="post" onsubmit="return confirm('Careful!! All the data will be deleted. Are you sure you want to proceed?')" >
+    {% csrf_token %}
+    <button class="delete_all_btn" type="submit" >Delete All Data</button>
+</form>
+{% endif %}
+</div>
+
+</div>
+{% endblock %}

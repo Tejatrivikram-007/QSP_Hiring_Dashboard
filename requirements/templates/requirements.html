@@ -13,14 +13,17 @@
     <table id="requirement-table">
         <thead>
             <tr>
+                {% comment %}
                 <th>Company Code</th>
+                {% endcomment %}
+
                 <th>Company Name</th>
                 <th>Degree</th>
                 <th>Stream</th>
                 <th>Min %</th>
                 <th>YOP</th>
                 <th>Salary</th>
-                <th>Agreement (Yr)</th>
+                <th>Skills</th>
                 <th>Location</th>
                 <th>Openings</th>   
                 <th>Date</th>
@@ -32,14 +35,17 @@
         <tbody id="requirement-body">
             {% for r in requirements %}
             <tr>
+                {% comment %}
                 <td>{{ r.company_id|upper }}</td>
+                {% endcomment %}
+
                 <td>{{ r.company_name|upper }}</td>
                 <td>{{ r.bachelor_degree|upper }}</td>
                 <td>{{ r.stream|upper }}</td>
                 <td>{{ r.percentage }}</td>
                 <td>{{ r.year_of_passout }}</td>
                 <td>₹ {{ r.salary }} Per Annum</td>
-                <td>{{ r.agreement }}</td>
+                <td>{{ r.skills|title }}</td>
                 <td>{{ r.location|title }}</td>
                 <td>{{ r.no_of_vacancies }}</td>
                 <td>{{ r.created_at.date }}</td>
